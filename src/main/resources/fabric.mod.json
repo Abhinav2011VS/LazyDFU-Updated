@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "lazydfu",
+  "version": "${version}",
+  "name": "LazyDFU",
+  "description": "Makes DataFixerUpper more lazy",
+  "authors": [
+    "Abhinav VS"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/lazydfu/icon.png",
+  "environment": "*",
+  "mixins": [
+    "lazydfu.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
