@@ -39,18 +39,21 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Find and Upload Build Artifact
+      - name: Find and Upload Build Artifacts
         run: |
-          # Assuming your mod JAR file follows a specific naming pattern
-          MOD_JAR=$(ls build/libs/*.jar | grep -E 'LazyDFU-.*\.jar' || true)
-          if [ -n "$MOD_JAR" ]; then
-            echo "Uploading $MOD_JAR"
-            echo "::set-output name=mod_jar::$MOD_JAR"
+          # Find all .jar files in the build/libs/ folder
+          MOD_JARS=$(ls build/libs/*.jar || true)
+          if [ -n "$MOD_JARS" ]; then
+            for MOD_JAR in $MOD_JARS; do
+              echo "Uploading $MOD_JAR"
+              # Upload each .jar file by setting the output
+              echo "::set-output name=mod_jar::$MOD_JAR"
+            done
           else
-            echo "No mod JAR file found!"
+            echo "No .jar files found!"
             exit 1
           fi
-        id: find-mod-jar
+        id: find-mod-jars
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
