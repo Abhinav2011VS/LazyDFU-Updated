@@ -39,24 +39,18 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Find and Upload Build Artifacts
+      - name: Find the most recently built JAR file
+        id: find-latest-jar
         run: |
-          # Find all .jar files in the build/libs/ folder
-          MOD_JARS=$(ls build/libs/*.jar || true)
-          if [ -n "$MOD_JARS" ]; then
-            for MOD_JAR in $MOD_JARS; do
-              echo "Uploading $MOD_JAR"
-              # Upload each .jar file by setting the output
-              echo "::set-output name=mod_jar::$MOD_JAR"
-            done
-          else
-            echo "No .jar files found!"
-            exit 1
-          fi
-        id: find-mod-jars
-
-      - name: Upload build artifact
+          # Find the latest modified .jar file in build/libs/
+          LATEST_JAR=$(ls -t build/libs/*.jar | head -n 1)
+          echo "Latest JAR file: $LATEST_JAR"
+          
+          # Set it as output for use in the upload step
+          echo "::set-output name=mod_jar::$LATEST_JAR"
+          
+      - name: Upload the latest built JAR file
         uses: actions/upload-artifact@v3
         with:
-          name: fabric-mod
-          path: ${{ steps.find-mod-jar.outputs.mod_jar }}
+          name: mod-jar
+          path: ${{ steps.find-latest-jar.outputs.mod_jar }}
