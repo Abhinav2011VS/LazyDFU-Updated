@@ -38,19 +38,9 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-
-      - name: Find the most recently built JAR file
-        id: find-latest-jar
-        run: |
-          # Find the latest modified .jar file in build/libs/
-          LATEST_JAR=$(ls -t build/libs/*.jar | head -n 1)
-          echo "Latest JAR file: $LATEST_JAR"
           
-          # Set it as output for use in the upload step
-          echo "::set-output name=mod_jar::$LATEST_JAR"
-          
-      - name: Upload the latest built JAR file
-        uses: actions/upload-artifact@v3
+      - name: Upload Jar
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: mod-jar
-          path: ${{ steps.find-latest-jar.outputs.mod_jar }}
+          path: build/libs/*.jar
