@@ -28,7 +28,13 @@ jobs:
           path: |
             /home/runner/.gradle
             .gradle/
-            build/
+            build/classes
+            build/devlibs
+            build/generated
+            build/loom-cache
+            build/processIncludeJars
+            build/resources
+            build/tmp
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
